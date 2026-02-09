@@ -22,6 +22,11 @@ const HomeScreen = ({ navigation }) => {
         navigation.replace("latestReportFlow");
     }
 
+    const handleopennotafications = () => {
+        navigation.replace("notifications");
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -31,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.headerRow}>
                 <Text />
                 <Text style={styles.headerText}>Hi, David</Text>
-                <TouchableOpacity style={styles.bellBtn}>
+                <TouchableOpacity style={styles.bellBtn} onPress={handleopennotafications}>
                     <Icon name="bell-outline" size={22} color={COLORS.white} />
                 </TouchableOpacity>
             </View>

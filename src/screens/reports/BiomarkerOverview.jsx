@@ -11,28 +11,25 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { LineChart } from 'react-native-chart-kit';
 
+
+const historyData = [
+    { id: 1, date: 'June 27, 2025', value: 13 },
+    { id: 2, date: 'May 14, 2025', value: 10 },
+    { id: 3, date: 'April 02, 2025', value: 8 },
+];
+
+
 const { width } = Dimensions.get('window');
-
-const COLORS = {
-    white: '#FFFFFF',
-    gradientStart: '#00D9D5',
-    gradientEnd: '#6C5CE7',
-    darkBg: '#2C2F4A',
-    lightBg: '#F5F7FF',
-    lightText: '#7C8DB5',
-    mediumText: '#5A6B8C',
-    purple: '#6D5DF6',
-    text: '#1A1D3D',
-};
-
-const SIZES = {
-    big: 20,
-};
+import { COLORS, SIZES } from '../../utils/Constants'
 
 const BiomarkerOverview = ({ navigation }) => {
 
     const handleprevious = () => {
         navigation.replace("biomarketlist");
+    }
+
+    const handleaibasedsuggetions = () => {
+        navigation.replace("aisuggetions")
     }
 
     // Chart data
@@ -45,27 +42,31 @@ const BiomarkerOverview = ({ navigation }) => {
     };
 
     const chartConfig = {
-        backgroundGradientFrom: COLORS.lightBg,
-        backgroundGradientTo: COLORS.lightBg,
-        color: (opacity = 1) => `rgba(108, 92, 231, ${opacity})`,
-        strokeWidth: 2,
-        barPercentage: 0.5,
-        useShadowColorFromDataset: false,
+        backgroundGradientFrom: '#F5F7FB',   // light grey card bg
+        backgroundGradientTo: '#F5F7FB',
+        decimalPlaces: 0,
+
+        color: (opacity = 1) => `rgba(120,120,120,${opacity})`, // line color grey
+        labelColor: (opacity = 1) => `rgba(130,130,130,${opacity})`, // axis labels grey
+
         propsForDots: {
-            r: '4',
+            r: '3',
             strokeWidth: '2',
-            stroke: COLORS.purple,
+            stroke: '#6D5DF6',   // keep purple dots
         },
+
         propsForBackgroundLines: {
-            strokeDasharray: '',
-            stroke: '#E5E9F2',
+            stroke: '#E3E7EF',   // soft grey grid lines
+            strokeWidth: 1,
         },
     };
 
+
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            {/* // top header */}
 
+            <View style={styles.headerspacing}>
                 {/* 🔙 Back Button */}
                 <TouchableOpacity style={styles.backBtn} onPress={handleprevious}>
                     <Icon name="arrow-left" size={24} color="#fff" />
@@ -74,13 +75,26 @@ const BiomarkerOverview = ({ navigation }) => {
                 {/* 🔷 HEADER CARD */}
                 <View style={styles.headerCard}>
                     <Text style={styles.small}>Biomarker Overview</Text>
-                    <Text style={styles.title}>White blood cells</Text>
-                    <Text style={styles.sub}>WBC</Text>
 
-                    <View style={styles.headerRow}>
-                        <Text style={styles.value}>↑ 320</Text>
-                        <Text style={styles.date}>June 27, 2025</Text>
+                    <View style={styles.cellscount}>
+                        <View>
+                            <Text style={styles.title}>White blood cells</Text>
+                            <Text style={styles.sub}>WBC</Text>
+                        </View>
+
+                        <View style={styles.headerRow}>
+                            <Text style={styles.value}>↑ 320</Text>
+                            <Text style={styles.date}>June 27, 2025</Text>
+                        </View>
                     </View>
+
+                </View>
+            </View>
+
+            {/* sub heaer  */}
+            <View style={styles.subheader}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+
 
                     <View style={styles.row}>
                         {/* Left: Abnormal Section */}
@@ -132,83 +146,100 @@ const BiomarkerOverview = ({ navigation }) => {
                             </LinearGradient>
                         </View>
                     </View>
-                </View>
 
-                {/* 📈 MARKERS CHART */}
-                <Text style={styles.sectionTitle}>Markers</Text>
-                <View style={styles.chartBox}>
-                    <LineChart
-                        data={chartData}
-                        width={width - 40}
-                        height={180}
-                        chartConfig={chartConfig}
-                        bezier
-                        style={styles.chart}
-                        withInnerLines={true}
-                        withOuterLines={false}
-                        withVerticalLines={false}
-                        withHorizontalLines={true}
-                        withDots={true}
-                        withShadow={false}
-                        fromZero={true}
-                    />
-                </View>
 
-                {/* DESCRIPTION */}
-                <Text style={styles.sectionTitle}>Description</Text>
-                <Text style={styles.desc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit lorem, sollicitudin eu facilisis et, condimentum eu orci. Ut non pulvinar purus, eu vestibulum enim. Suspendisse dignissim suscipit nulla.
-                </Text>
 
-                {/* HISTORICAL TRENDS */}
-                <Text style={styles.sectionTitle}>Historical Trends</Text>
+                    {/* 📈 MARKERS CHART */}
+                    <Text style={styles.sectionTitle}>Markers</Text>
+                    <View style={styles.chartBox}>
+                        <LineChart
+                            data={chartData}
+                            width={width - 40}
+                            height={180}
+                            chartConfig={chartConfig}
+                            bezier
+                            style={styles.chart}
+                            withInnerLines={true}
+                            withOuterLines={false}
+                            withVerticalLines={false}
+                            withHorizontalLines={true}
+                            withDots={true}
+                            withShadow={false}
+                            fromZero={true}
+                        />
+                    </View>
 
-                <View style={styles.historyCard}>
-                    <Text style={styles.historyText}>June 27, 2025</Text>
-                    <Text style={styles.historyValue}>13 <Text style={styles.historyUnit}>10⁹/l</Text></Text>
-                    <Icon name="chevron-right" size={20} color={COLORS.mediumText} />
-                </View>
+                    {/* DESCRIPTION */}
+                    <Text style={styles.sectionTitle}>Description</Text>
+                    <Text style={styles.desc}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit lorem, sollicitudin eu facilisis et, condimentum eu orci. Ut non pulvinar purus, eu vestibulum enim. Suspendisse dignissim suscipit nulla.
+                    </Text>
 
-                <View style={styles.historyCard}>
-                    <Text style={styles.historyText}>June 27, 2025</Text>
-                    <Text style={styles.historyValue}>13 <Text style={styles.historyUnit}>10⁹/l</Text></Text>
-                    <Icon name="chevron-right" size={20} color={COLORS.mediumText} />
-                </View>
+                    <View style={styles.historicaltable}>
+                        {/* HISTORICAL TRENDS */}
+                        <Text style={styles.sectionTitle}>Historical Trends</Text>
 
-                <View style={styles.historyCard}>
-                    <Text style={styles.historyText}>June 27, 2025</Text>
-                    <Text style={styles.historyValue}>13 <Text style={styles.historyUnit}>10⁹/l</Text></Text>
-                    <Icon name="chevron-right" size={20} color={COLORS.mediumText} />
-                </View>
+                        {historyData.map((item, index) => (
+                            <View
+                                key={item.id}
+                                style={[
+                                    styles.historyCard,
+                                    index !== historyData.length - 1 && styles.historyBorder
+                                ]} >
+                                <Text style={styles.historyText}>{item.date}</Text>
+                                <Text style={styles.historyValue}>
+                                    {item.value} <Text style={styles.historyUnit}>10⁹/l</Text>
+                                </Text>
+                                <Icon name="chevron-right" size={24} color={COLORS.mediumText} />
+                            </View>
+                        ))}
 
-                {/* AI BUTTON */}
-                <TouchableOpacity style={styles.aiBtn} activeOpacity={0.8}>
-                    <LinearGradient
-                        colors={['#00D9D5', '#6C5CE7']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        style={styles.aiInner}>
-                        <Text style={styles.aiText}>AI-Based Suggestions</Text>
-                        <Icon name="arrow-top-right" size={20} color="#fff" />
-                    </LinearGradient>
-                </TouchableOpacity>
 
-                <View style={{ height: 100 }} />
+                    </View>
 
-            </ScrollView>
+                    {/* AI BUTTON */}
+                    <TouchableOpacity style={styles.aiBtn} activeOpacity={0.8}
+                        onPress={handleaibasedsuggetions}>
+                        <LinearGradient
+                            colors={['#00D9D5', '#6C5CE7']}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            style={styles.aiInner}>
+                            <Text style={styles.aiText}>AI-Based Suggestions</Text>
+                            <Icon name="arrow-top-right" size={20} color="#fff" />
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                    <View style={{ height: 100 }} />
+
+                </ScrollView>
+
+            </View>
         </View>
-    );
-};
+    )
+}
 
-export default BiomarkerOverview;
+export default BiomarkerOverview
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.white,
-        paddingHorizontal: 20,
-        paddingTop: 50,
+        backgroundColor: COLORS.mediumdark,
+        paddingTop: 25,
     },
+    subheader: {
+        flex: 1,
+        backgroundColor: COLORS.white,
+        paddingHorizontal: SIZES.big,
+        borderTopRightRadius: SIZES.maxbig,
+        borderTopLeftRadius: SIZES.maxbig,
+        paddingVertical: SIZES.big,
+        paddingHorizontal: SIZES.big,
+    },
+
+
+
+    // latest css 
 
     backBtn: {
         width: 44,
@@ -224,15 +255,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 8,
     },
-
+    headerspacing: {
+        paddingHorizontal: SIZES.average,
+    },
     headerCard: {
         backgroundColor: COLORS.darkBg,
         borderRadius: 20,
-        padding: 20,
-        marginBottom: 24,
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
+        paddingHorizontal: SIZES.small,
         shadowOpacity: 0.15,
         shadowRadius: 10,
     },
@@ -247,26 +276,19 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 22,
         fontWeight: '700',
-        marginBottom: 2,
     },
 
     sub: {
         color: '#A0A3BD',
         fontSize: 14,
-        marginBottom: 16,
-    },
-
-    headerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 20,
     },
 
     value: {
         color: '#fff',
         fontSize: 24,
         fontWeight: '700',
+        flexDirection: "column",
+        alignSelf: "flex-end",
     },
 
     date: {
@@ -339,25 +361,30 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '600',
     },
+    cellscount: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingVertical: SIZES.verysmall,
+        marginBottom: SIZES.big,
+    },
 
     sectionTitle: {
         fontSize: 16,
         fontWeight: '700',
         color: COLORS.text,
-        marginBottom: 12,
-        marginTop: 8,
     },
 
     chartBox: {
-        backgroundColor: COLORS.lightBg,
         borderRadius: 16,
-        padding: 10,
-        marginBottom: 24,
+        paddingVertical: SIZES.small,
+        marginBottom: SIZES.big,
         overflow: 'hidden',
     },
 
     chart: {
         borderRadius: 16,
+        backgroundColor: COLORS.white,
     },
 
     desc: {
@@ -366,23 +393,28 @@ const styles = StyleSheet.create({
         lineHeight: 22,
         marginBottom: 24,
     },
+    historicaltable: {
+        backgroundColor: COLORS.lightbg,
+        flexDirection: "column",
+        rowGap: SIZES.medium,
+        paddingHorizontal: SIZES.small,
+        marginBottom: SIZES.small,
+        padding: SIZES.paddingVertical,
+        borderRadius: SIZES.medium,
+    },
 
     historyCard: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: COLORS.lightBg,
-        paddingVertical: 16,
-        paddingHorizontal: 16,
-        borderRadius: 14,
-        marginBottom: 10,
+        paddingBottom: 4
     },
 
-    historyText: {
-        color: COLORS.mediumText,
-        fontSize: 14,
-        flex: 1,
+    historyBorder: {
+        borderBottomWidth: 1,
+        borderColor: COLORS.averagegray,
     },
+
 
     historyValue: {
         fontWeight: '700',
@@ -421,4 +453,4 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
     },
-});
+})

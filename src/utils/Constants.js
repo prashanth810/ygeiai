@@ -18,6 +18,8 @@ export const COLORS = {
     lightdark: "rgba(0,0,0,0.3)",
     mediumdark: "#313450",
     bglighdrak: "#E4E5EE",
+    lightbg: "#E4E5EE",
+    bgicons: "7D7BFF",
 
     // Input Colors
     inputBorder: '#E8E8E8',
@@ -35,6 +37,7 @@ export const COLORS = {
     transparent: 'transparent',
     gray: '#666666',
     lightGray: '#F5F5F5',
+    averagegray: "#A8AECC",
     checkboxBorder: '#DDDDDD',
 };
 
@@ -47,11 +50,14 @@ export const SIZES = {
     h5: 18,
     body: 16,
     body2: 14,
+    verysmall: 5,
     small: 12,
     tiny: 10,
     average: 13,
     medium: 14,
     big: 20,
+    miniminbig: 25,
+    maxbig: 48,
 
     // Spacing
     padding: 20,

@@ -11,6 +11,12 @@ import Calendartimings from '../screens/calendar/Calendartimings';
 import ReportDetails from './../screens/reports/ReportDetails';
 import BiomarkerList from './../screens/reports/BiomarkerList';
 import BiomarkerOverview from './../screens/reports/BiomarkerOverview';
+import AiSuggetions from './../screens/suggetions/AiSuggetions';
+import ReminderList from './../screens/suggetions/ReminderList';
+import Addreminder from './../screens/suggetions/Addreminder';
+import ReminderNote from './../screens/suggetions/ReminderNote';
+import Notifications from '../components/Notifications';
+import UserProfile from './../screens/user profile/UserProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +30,12 @@ const MainStackNav = () => {
                 <Stack.Screen name="reportdetails" component={ReportDetails} />
                 <Stack.Screen name="biomarketlist" component={BiomarkerList} />
                 <Stack.Screen name="overview" component={BiomarkerOverview} />
+                <Stack.Screen name="aisuggetions" component={AiSuggetions} />
+                <Stack.Screen name="reminderlist" component={ReminderList} />
+                <Stack.Screen name="addreminder" component={Addreminder} />
+                <Stack.Screen name="addremindernote" component={ReminderNote} />
+                <Stack.Screen name="notifications" component={Notifications} />
+                <Stack.Screen name="userprofile" component={UserProfile} />
             </Stack.Navigator>
 
             {/* Always on top */}

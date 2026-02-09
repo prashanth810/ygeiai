@@ -90,37 +90,38 @@ const ResportList = ({ navigation }) => {
             {/* Header Card */}
             <View style={styles.headerCard}>
 
-                {loading ? (
-                    <View style={styles.loaderWrap}>
-                        <DotLoder />
-                    </View>
-                ) : (
-                    <>
-                        <View style={{ flex: 1 }}>
-                            <Text style={styles.headerSmall}>Your latest report</Text>
-                            <Text style={styles.headerBig}>{report.title}</Text>
-                            <Text style={styles.date}>{report.date}</Text>
+                {/* LEFT SIDE — always visible */}
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.headerSmall}>Your latest report</Text>
+                    <Text style={styles.headerBig}>{report?.title}</Text>
+                    <Text style={styles.date}>{report?.date}</Text>
 
-                            <TouchableOpacity style={styles.moreBtn} onPress={handleviewdetails}>
-                                <LinearGradient
-                                    colors={[COLORS.gradientStart, COLORS.gradientEnd]}
-                                    style={styles.moreBtnInner}>
-                                    <Text style={styles.moreText}>More Details</Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                    <TouchableOpacity style={styles.moreBtn} onPress={handleviewdetails}>
+                        <LinearGradient
+                            colors={[COLORS.gradientStart, COLORS.gradientEnd]}
+                            style={styles.moreBtnInner}>
+                            <Text style={styles.moreText}>More Details</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
+
+                {/* RIGHT SIDE — donut OR loader */}
+                <View style={styles.donutWrap}>
+                    {loading ? (
+                        <View style={styles.loaderCircle}>
+                            <DotLoder />
                         </View>
-
-                        {/* Donut UI (no svg, just design) */}
-                        <View style={styles.donutWrap}>
-                            <View style={styles.donutOuter}>
-                                <View style={styles.donutInner}>
-                                    <Text style={styles.donutText}>{report.percent}%</Text>
-                                </View>
+                    ) : (
+                        <View style={styles.donutOuter}>
+                            <View style={styles.donutInner}>
+                                <Text style={styles.donutText}>{report.percent}%</Text>
                             </View>
                         </View>
-                    </>
-                )}
+                    )}
+                </View>
+
             </View>
+
 
             <View style={styles.rowHeader}>
                 <Text style={styles.sectionTitle}>Past 12 months</Text>
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     date: { color: COLORS.mediumText, fontSize: 12 },
 
     percentBadge: {
-        backgroundColor: '#7D7BFF',
+        backgroundColor: COLORS.bgicons,
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 6,

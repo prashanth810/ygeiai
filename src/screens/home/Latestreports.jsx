@@ -6,6 +6,8 @@ import {
     TouchableOpacity,
     Dimensions,
     StatusBar,
+    ScrollView,
+
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -65,35 +67,39 @@ const Latestreports = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" />
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 40 }}
+                showsVerticalScrollIndicator={false}>
 
-            <TouchableOpacity
-                style={styles.backBtn}
-                onPress={handlegoback}>
-                <Icon name="arrow-left" size={22} color="#fff" />
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.backBtn}
+                    onPress={handlegoback}>
+                    <Icon name="arrow-left" size={22} color="#fff" />
+                </TouchableOpacity>
 
-            <View style={styles.iconWrap}>
-                <Icon name="alert-outline" size={80} color={COLORS.darkText} />
-            </View>
+                <View style={styles.iconWrap}>
+                    <Icon name="alert-outline" size={80} color={COLORS.darkText} />
+                </View>
 
-            <Text style={styles.title}>Disclaimer</Text>
-            <Text style={styles.sub}>
-                To continue with the app, please read {"\n"} through and acknowledge the disclaimer
-            </Text>
-
-            <View style={styles.box}>
-                <Text style={styles.boxText}>
-                    Pop-up screen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales neque vel mi scelerisque, sit amet tincidunt nulla hendrerit. Nullam at tincidunt nibh. Quisque auctor, nibh nec venenatis tristique, lorem felis aliquam neque, sit amet maximus felis quam at ligula. Suspendisse efficitur, sem vel accumsan interdum, mi nisi semper nulla, in interdum libero diam semper neque. Ut at pulvinar mauris. Quisque varius nibh vel sem eleifend varius. Morbi facilisis tortor nulla, sit amet congue nunc tincidunt id. Suspendisse condimentum enim neque, eget volutpat mauris sodales vel. Donec laoreet justo nec tincidunt semper.
+                <Text style={styles.title}>Disclaimer</Text>
+                <Text style={styles.sub}>
+                    To continue with the app, please read {"\n"} through and acknowledge the disclaimer
                 </Text>
-            </View>
 
-            <TouchableOpacity style={styles.btn} onPress={handleAgree}>
-                <LinearGradient
-                    colors={[COLORS.gradientStart, COLORS.gradientEnd]}
-                    style={styles.btnInner}>
-                    <Text style={styles.btnText}>I Acknowledge the Disclaimer</Text>
-                </LinearGradient>
-            </TouchableOpacity>
+                <View style={styles.box}>
+                    <Text style={styles.boxText}>
+                        Pop-up screen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales neque vel mi scelerisque, sit amet tincidunt nulla hendrerit. Nullam at tincidunt nibh. Quisque auctor, nibh nec venenatis tristique, lorem felis aliquam neque, sit amet maximus felis quam at ligula. Suspendisse efficitur, sem vel accumsan interdum, mi nisi semper nulla, in interdum libero diam semper neque. Ut at pulvinar mauris. Quisque varius nibh vel sem eleifend varius. Morbi facilisis tortor nulla, sit amet congue nunc tincidunt id. Suspendisse condimentum enim neque, eget volutpat mauris sodales vel. Donec laoreet justo nec tincidunt semper.
+                    </Text>
+                </View>
+
+                <TouchableOpacity style={styles.btn} onPress={handleAgree}>
+                    <LinearGradient
+                        colors={[COLORS.gradientStart, COLORS.gradientEnd]}
+                        style={styles.btnInner}>
+                        <Text style={styles.btnText}>I Acknowledge the Disclaimer</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+            </ScrollView>
         </View>
     );
 }
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
 
     title: {
         textAlign: 'center',
-        fontSize: width * 0.058,
+        fontSize: width * 0.06,
         fontWeight: SIZES.bold,
         color: COLORS.darkText,
     },

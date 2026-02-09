@@ -18,6 +18,8 @@ import brandlogo2 from '../../assets/brandlogo2.png';
 import applelogo from '../../assets/applelogo.png';
 import googlelogo from '../../assets/googlelogo.png';
 import Feather from 'react-native-vector-icons/Feather';
+import { useDispatch } from 'react-redux';
+import { handlelogin } from '../../redux/slices/AuthSlice';
 
 
 
@@ -30,6 +32,8 @@ const LoginScreen = ({ navigation }) => {
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
 
+    const dispatch = useDispatch();
+
     // Email validation
     const validateEmail = (text) => {
         setEmail(text);
@@ -37,15 +41,26 @@ const LoginScreen = ({ navigation }) => {
         setEmailValid(emailRegex.test(text));
     };
 
-    const handleCreateAccount = () => {
-        if (emailValid && password.length >= 6 && agreeToTerms) {
-            // Navigate or call API
-            console.log('Creating account...');
-            navigation.replace('profile');
+    const handleCreateAccount = async () => {
+        if (!emailValid) return;
+        if (password.length < 6) return;
+        if (!agreeToTerms) return;
+
+        const data = { email, password };
+
+        console.log("✅ data :", data);
+        try {
+            const result = await dispatch(handlelogin(data)).unwrap();
+
+            console.log("✅ Login Success:", result);
+
+            navigation.replace("home"); // or main screen
+
+        } catch (err) {
+            console.log("❌ Login Error:", err);
         }
-        else {
-        };
     };
+
 
     const handleSignIn = () => {
         navigation.navigate('SignIn'); // Update route name

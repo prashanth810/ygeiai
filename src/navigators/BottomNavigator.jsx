@@ -53,11 +53,11 @@ const BottomNavigator = () => {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <TouchableOpacity onPress={() => navigation.navigate('main', { screen: 'userprofile' })}>
                 <Icon
                     name="account-outline"
                     size={24}
-                    color={isActive('Profile') ? COLORS.gradientEnd : COLORS.mediumText}
+                    color={isActive('userprofile') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
         </View>
