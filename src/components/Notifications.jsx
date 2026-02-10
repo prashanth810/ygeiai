@@ -48,7 +48,7 @@ const Notifications = ({ navigation }) => {
 
             {/* Header */}
             <View style={styles.headerRow}>
-                <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => navigation.canGoBack() && navigation.goBack()}>
                     <Icon name="arrow-left" size={22} color="#fff" />
                 </TouchableOpacity>
 

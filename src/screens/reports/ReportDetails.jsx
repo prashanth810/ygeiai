@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, SIZES } from '../..//utils/Constants';
 import { Share, Alert } from 'react-native';
+import WaveProgressUI from '../../components/WaveProgressUI';
 
 
 const { width } = Dimensions.get('window');
@@ -65,31 +66,28 @@ const ReportDetails = ({ navigation }) => {
                 </View>
 
                 {/* 🔷 Header Card */}
-                <View style={styles.headerCard}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.small}>Lab panel</Text>
-                        <Text style={styles.title}>
-                            Urine Tests {'\n'}
-                            (Dipstick, Microscopy, Culture)
-                        </Text>
-                        <Text style={styles.date}>June 24, 2025</Text>
+                <View style={styles.headerbg}>
+                    <View style={styles.headerCard}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.small}>Lab panel</Text>
+                            <Text style={styles.title}>
+                                Urine Tests {'\n'}
+                                (Dipstick, Microscopy, Culture)
+                            </Text>
+                            <Text style={styles.date}>June 24, 2025</Text>
 
-                        <Text style={styles.testTitle}>Testing Reason</Text>
-                        <Text style={styles.reason}>
-                            Lower urinary tract symptoms: dysuria, frequency,
-                            incomplete emptying
-                        </Text>
-                    </View>
-
-                    {/* Donut */}
-                    <View style={styles.donutWrap}>
-                        <View style={styles.donutOuter}>
-                            <View style={styles.donutInner}>
-                                <Text style={styles.percent}>20%</Text>
-                                <Text style={styles.abnormal}>Abnormal</Text>
-                            </View>
                         </View>
+
+                        {/* Donut */}
+                        <WaveProgressUI />
                     </View>
+
+                    <Text style={styles.testTitle}>Testing Reason</Text>
+                    <Text style={styles.reason}>
+                        Lower urinary tract symptoms: dysuria, frequency,
+                        incomplete emptying
+                    </Text>
+
                 </View>
 
                 {/* 🟦 Sections */}
@@ -160,21 +158,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    headerbg: {
+        backgroundColor: '#2C2F4A',
+        marginBottom: 20,
+        paddingHorizontal: SIZES.small,
+        paddingVertical: SIZES.medium,
+        borderRadius: 20,
+    },
 
     headerCard: {
-        backgroundColor: '#2C2F4A',
-        borderRadius: 20,
-        padding: 18,
         flexDirection: 'row',
-        marginBottom: 20
     },
 
     small: { color: '#ccc' },
     title: { color: '#fff', fontSize: 17, fontWeight: '700', marginVertical: 5 },
     date: { color: '#bbb', marginBottom: 10 },
 
-    testTitle: { color: '#aaa', marginTop: 8 },
-    reason: { color: '#fff', fontSize: 12 },
+    testTitle: { color: '#aaa', },
+    reason: { color: COLORS.white, fontSize: SIZES.small },
 
     donutWrap: { justifyContent: 'center', alignItems: 'center' },
     donutOuter: {

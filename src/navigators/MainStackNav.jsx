@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator();
 
 const MainStackNav = () => {
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="home" component={HomeScreen} />
                 <Stack.Screen name="reports" component={ResportList} />

@@ -15,6 +15,7 @@ import { COLORS, SIZES } from '../../utils/Constants';
 import logoname from '../../assets/logoname.png';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import DotLoder from '../../components/DotLoder';
+import WaveProgressUI from '../../components/WaveProgressUI';
 
 const { width } = Dimensions.get('window');
 
@@ -112,11 +113,7 @@ const ResportList = ({ navigation }) => {
                             <DotLoder />
                         </View>
                     ) : (
-                        <View style={styles.donutOuter}>
-                            <View style={styles.donutInner}>
-                                <Text style={styles.donutText}>{report.percent}%</Text>
-                            </View>
-                        </View>
+                        <WaveProgressUI />
                     )}
                 </View>
 

@@ -20,9 +20,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
-  text: {
-    color: '#0000', // white text
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
 });

@@ -42,8 +42,8 @@ const BiomarkerOverview = ({ navigation }) => {
     };
 
     const chartConfig = {
-        backgroundGradientFrom: '#F5F7FB',   // light grey card bg
-        backgroundGradientTo: '#F5F7FB',
+        backgroundGradientFrom: COLORS.white,   // light grey card bg
+        backgroundGradientTo: COLORS.white,
         decimalPlaces: 0,
 
         color: (opacity = 1) => `rgba(120,120,120,${opacity})`, // line color grey
@@ -97,53 +97,40 @@ const BiomarkerOverview = ({ navigation }) => {
 
 
                     <View style={styles.row}>
-                        {/* Left: Abnormal Section */}
+                        {/* Left: Abnormal */}
                         <View style={styles.abnormalWrap}>
                             <View style={styles.abnormalHeader}>
-                                <Text style={styles.label}>Abnormal</Text>
-                                <Text style={styles.abnormalValue}>13</Text>
+                                <Text style={styles.sectionLabel}>Abnormal</Text>
+                                <Text style={styles.abnormalCount}>13</Text>
                             </View>
-                            <View style={styles.progressBar}>
+
+                            <View style={styles.progressBarContainer}>
                                 <LinearGradient
-                                    colors={['#A78BFA', '#6D5DF6']}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 0 }}
-                                    style={[styles.progressFill, { width: '65%' }]}
+                                    colors={['#6236FF', '#8D6EFE']}
+                                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                    style={[styles.progressFill, { width: '85%' }]}
                                 />
+                                {/* The Circle Indicator on the bar */}
+                                <View style={[styles.barIndicator, { left: '80%' }]} />
                             </View>
-                            <Text style={styles.smallText}>Worse from last result 10%</Text>
+
+                            <Text style={styles.worseText}>Worse from last result 10%</Text>
                         </View>
 
-                        {/* Right: Specific Range Section */}
+                        {/* Right: Specific Range */}
                         <View style={styles.rangeWrap}>
-                            <Text style={styles.label}>Specific Range</Text>
+                            <Text style={styles.sectionLabel}>Specific Range</Text>
 
-                            <LinearGradient
-                                colors={['#8B7BFF', '#6D5DF6']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                style={styles.rangeItem}>
-                                <Text style={styles.rangeText}>1 - 5</Text>
-                                <Text style={styles.rangeText}>10⁹/l</Text>
-                            </LinearGradient>
-
-                            <LinearGradient
-                                colors={['#8B7BFF', '#6D5DF6']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                style={styles.rangeItem}>
-                                <Text style={styles.rangeText}>5 - 10</Text>
-                                <Text style={styles.rangeText}>10⁹/l</Text>
-                            </LinearGradient>
-
-                            <LinearGradient
-                                colors={['#8B7BFF', '#6D5DF6']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                style={styles.rangeItem}>
-                                <Text style={styles.rangeText}>10 - 15</Text>
-                                <Text style={styles.rangeText}>10⁹/l</Text>
-                            </LinearGradient>
+                            {['1 - 5', '5 - 10', '10 - 15'].map((range, idx) => (
+                                <LinearGradient
+                                    key={idx}
+                                    colors={['#6236FF', '#9370DB']}
+                                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                    style={styles.rangeItem}>
+                                    <Text style={styles.rangeText}>{range}</Text>
+                                    <Text style={styles.rangeUnit}>10⁹/l</Text>
+                                </LinearGradient>
+                            ))}
                         </View>
                     </View>
 
@@ -296,71 +283,23 @@ const styles = StyleSheet.create({
         fontSize: 13,
     },
 
-    row: {
-        flexDirection: 'row',
-        gap: 12,
-    },
+    row: { flexDirection: 'row', gap: 15 },
+    abnormalWrap: { flex: 1.2 },
+    rangeWrap: { flex: 1 },
+    sectionLabel: { color: '#2D304D', fontSize: 14, fontWeight: '700', marginBottom: 10 },
+    abnormalHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 },
+    abnormalCount: { fontSize: 18, fontWeight: '800', color: '#2D304D' },
 
-    abnormalWrap: {
-        flex: 1,
-    },
+    // PROGRESS BAR WITH CIRCLE INDICATOR
+    progressBarContainer: { height: 14, backgroundColor: '#E5E7EB', borderRadius: 7, overflow: 'visible', marginVertical: 10, justifyContent: 'center' },
+    progressFill: { height: '100%', borderRadius: 7 },
+    barIndicator: { position: 'absolute', width: 10, height: 10, borderRadius: 5, backgroundColor: '#FFF', borderWidth: 2, borderColor: '#6236FF' },
 
-    abnormalHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
+    worseText: { color: '#71717A', fontSize: 11, textAlign: 'center' },
+    rangeItem: { flexDirection: 'row', justifyContent: 'space-between', padding: 8, borderRadius: 10, marginBottom: 6 },
+    rangeText: { color: '#FFF', fontSize: 12, fontWeight: '700' },
+    rangeUnit: { color: '#FFF', fontSize: 10, opacity: 0.8 },
 
-    label: {
-        color: '#D1D5E8',
-        fontSize: 12,
-        fontWeight: '500',
-    },
-
-    abnormalValue: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '700',
-    },
-
-    progressBar: {
-        height: 8,
-        backgroundColor: '#3E4157',
-        borderRadius: 4,
-        overflow: 'hidden',
-        marginBottom: 6,
-    },
-
-    progressFill: {
-        height: '100%',
-        borderRadius: 4,
-    },
-
-    smallText: {
-        color: '#A0A3BD',
-        fontSize: 11,
-    },
-
-    rangeWrap: {
-        flex: 1,
-    },
-
-    rangeItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 8,
-        marginTop: 6,
-    },
-
-    rangeText: {
-        color: '#fff',
-        fontSize: 12,
-        fontWeight: '600',
-    },
     cellscount: {
         flexDirection: "row",
         alignItems: "center",
@@ -370,7 +309,7 @@ const styles = StyleSheet.create({
     },
 
     sectionTitle: {
-        fontSize: 16,
+        fontSize: SIZES.margin,
         fontWeight: '700',
         color: COLORS.text,
     },
@@ -383,7 +322,7 @@ const styles = StyleSheet.create({
     },
 
     chart: {
-        borderRadius: 16,
+        borderRadius: SIZES.margin,
         backgroundColor: COLORS.white,
     },
 
@@ -394,13 +333,13 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     historicaltable: {
-        backgroundColor: COLORS.lightbg,
+        backgroundColor: COLORS.lightGray,
         flexDirection: "column",
         rowGap: SIZES.medium,
         paddingHorizontal: SIZES.small,
         marginBottom: SIZES.small,
         padding: SIZES.paddingVertical,
-        borderRadius: SIZES.medium,
+        borderRadius: SIZES.big,
     },
 
     historyCard: {

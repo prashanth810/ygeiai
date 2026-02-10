@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
-import { COLORS } from '../utils/Constants';
+import { COLORS, SIZES } from '../utils/Constants';
 
 const BottomNavigator = () => {
     const navigation = useNavigation();
@@ -28,7 +28,7 @@ const BottomNavigator = () => {
             <TouchableOpacity onPress={() => navigation.navigate('main', { screen: 'home' })}>
                 <Icon
                     name="home-outline"
-                    size={24}
+                    size={28}
                     color={isActive('home') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
@@ -36,7 +36,7 @@ const BottomNavigator = () => {
             <TouchableOpacity onPress={() => navigation.navigate('main', { screen: 'reports' })}>
                 <Icon
                     name="file-document-outline"
-                    size={24}
+                    size={28}
                     color={isActive('reports') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
@@ -48,7 +48,7 @@ const BottomNavigator = () => {
             <TouchableOpacity onPress={() => navigation.navigate('calendar')}>
                 <Icon
                     name="calendar-outline"
-                    size={24}
+                    size={27}
                     color={isActive('Calendar') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
@@ -56,7 +56,7 @@ const BottomNavigator = () => {
             <TouchableOpacity onPress={() => navigation.navigate('main', { screen: 'userprofile' })}>
                 <Icon
                     name="account-outline"
-                    size={24}
+                    size={28}
                     color={isActive('userprofile') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
@@ -69,12 +69,13 @@ export default BottomNavigator;
 const styles = StyleSheet.create({
     bottomNav: {
         position: 'absolute',
-        bottom: 20,
-        left: 20,
-        right: 20,
+        bottom: 10,
+        left: 0,
+        right: 0,
         height: 70,
         backgroundColor: COLORS.white,
-        borderRadius: 35,
+        borderTopRightRadius: 35,
+        borderTopLeftRadius: 35,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -89,12 +90,11 @@ const styles = StyleSheet.create({
     },
 
     centerBtn: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         borderRadius: 30,
         backgroundColor: COLORS.gradientEnd,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: -20,
     },
 });
