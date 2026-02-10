@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { COLORS, SIZES } from '../utils/Constants';
 
 const BottomNavigator = () => {
     const navigation = useNavigation();
+    const { width } = Dimensions.get('window');
 
     // ✅ FIX: Get the actual current screen name, even if nested
     const currentRoute = useNavigationState(state => {
@@ -69,7 +70,7 @@ export default BottomNavigator;
 const styles = StyleSheet.create({
     bottomNav: {
         position: 'absolute',
-        bottom: 10,
+        bottom: width * 0.05,
         left: 0,
         right: 0,
         height: 70,
