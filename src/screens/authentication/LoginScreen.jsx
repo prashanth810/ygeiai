@@ -41,7 +41,8 @@ const LoginScreen = ({ navigation }) => {
         if (emailValid && password.length >= 6 && agreeToTerms) {
             // Navigate or call API
             console.log('Creating account...');
-            navigation.replace('profile');
+            // navigation.replace('profile');
+            navigation.replace('main');
         }
         else {
         };

@@ -30,7 +30,7 @@ const Addreminder = ({ navigation }) => {
                         value={enabled}
                         onValueChange={(val) => {
                             setEnabled(val);
-                            if (val) navigation.replace('addremindernote');
+                            // if (val) navigation.replace('addremindernote');
                         }}
                         trackColor={{
                             false: '#E5E7EB',   // light grey when OFF

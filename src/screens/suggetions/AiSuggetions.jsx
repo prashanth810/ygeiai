@@ -57,6 +57,10 @@ const AiSuggetions = ({ navigation }) => {
         navigation.replace("reminderlist");
     }
 
+    const handleprevious = () => {
+        navigation.replace("home");
+    }
+
     const renderItem = ({ item }) => (
         <View style={styles.cardWrap}>
             <ImageBackground
@@ -88,7 +92,7 @@ const AiSuggetions = ({ navigation }) => {
             <StatusBar barStyle="dark-content" />
 
             {/* Back Button */}
-            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.backBtn} onPress={handleprevious}>
                 <Icon name="arrow-left" size={22} color="#fff" />
             </TouchableOpacity>
 

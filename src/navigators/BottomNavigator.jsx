@@ -45,11 +45,11 @@ const BottomNavigator = () => {
                 <Icon name="qrcode-scan" size={26} color={COLORS.white} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('calendar')}>
+            <TouchableOpacity onPress={() => navigation.navigate('latestReportFlow')}>
                 <Icon
                     name="calendar-outline"
                     size={27}
-                    color={isActive('Calendar') ? COLORS.gradientEnd : COLORS.mediumText}
+                    color={isActive('latestReportFlow') ? COLORS.gradientEnd : COLORS.mediumText}
                 />
             </TouchableOpacity>
 

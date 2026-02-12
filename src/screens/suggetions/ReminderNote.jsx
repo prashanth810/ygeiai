@@ -16,11 +16,11 @@ const ReminderNote = ({ navigation }) => {
     const [note, setNote] = useState('');
 
     const handleprevious = () => {
-        navigation.replace("addreminder");
+        navigation.replace("reminderlist");
     }
 
     const handlesubmit = () => {
-        navigation.replace("addreminder");
+        handleprevious();
     }
 
     return (

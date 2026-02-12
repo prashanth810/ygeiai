@@ -205,6 +205,7 @@ const UserProfile = ({ navigation }) => {
                     <Text style={styles.userName}>User Name</Text>
                     <Text style={styles.userEmail}>username@gmail.com</Text>
                 </View>
+
                 <Modal
                     visible={imagePickerVisible}
                     transparent
@@ -245,8 +246,7 @@ const UserProfile = ({ navigation }) => {
                     {/* Personal Information */}
                     <TouchableOpacity
                         style={styles.menuCard}
-                        onPress={() => setPersonalInfoExpanded(!personalInfoExpanded)}
-                    >
+                        onPress={() => setPersonalInfoExpanded(!personalInfoExpanded)} >
                         <View style={styles.iconWrapper}>
                             <MaterialCommunityIcons name="card-account-details" size={24} color="#fff" />
                         </View>
@@ -534,36 +534,6 @@ const UserProfile = ({ navigation }) => {
                     <View style={{ height: 120 }} />
                 </ScrollView>
             </View>
-
-            {/* Bottom Navigation */}
-            <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navItem}>
-                    <Feather name="home" size={24} color="#A0A3BD" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem}>
-                    <MaterialCommunityIcons name="file-document-outline" size={24} color="#A0A3BD" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItemActive}>
-                    <LinearGradient
-                        colors={['#00D9D5', '#6C5CE7']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        style={styles.navItemActiveGradient}
-                    >
-                        <MaterialCommunityIcons name="view-grid" size={24} color="#fff" />
-                    </LinearGradient>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem}>
-                    <MaterialCommunityIcons name="calendar-blank" size={24} color="#A0A3BD" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem}>
-                    <MaterialCommunityIcons name="account" size={24} color="#A0A3BD" />
-                </TouchableOpacity>
-            </View>
         </View>
     );
 };
@@ -578,7 +548,7 @@ const styles = StyleSheet.create({
     headerspacing: {
         paddingHorizontal: 20,
         paddingTop: 25,
-        paddingBottom: 30,
+        paddingBottom: 20,
     },
     account: {
         flexDirection: 'row',
@@ -674,8 +644,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
-        paddingTop: 24,
-        paddingHorizontal: 20,
+        paddingTop: 10,
+        paddingHorizontal: 10,
     },
     menuCard: {
         flexDirection: 'row',
@@ -896,7 +866,6 @@ const styles = StyleSheet.create({
     },
     deleteBtn: {
         marginTop: 12,
-        marginBottom: 24,
         paddingVertical: 16,
         borderRadius: 28,
         borderWidth: 2,
@@ -957,7 +926,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 3,
         borderColor: '#00D9D5',
-    }, modalOverlay: {
+    },
+    modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.4)',
         justifyContent: 'flex-end',

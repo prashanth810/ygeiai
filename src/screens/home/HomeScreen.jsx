@@ -27,6 +27,13 @@ const HomeScreen = ({ navigation }) => {
     }
 
 
+    const handleshowreminders = () => {
+        navigation.replace("reminderlist")
+    }
+
+    const handlsuggetions = () => {
+        navigation.replace("aisuggetions");
+    }
 
     return (
         <View style={styles.container}>
@@ -55,8 +62,8 @@ const HomeScreen = ({ navigation }) => {
                 Nullam at tincidunt nibh.
             </Text>
 
-            {/* Main Button */}
-            <TouchableOpacity style={styles.reportBtn} onPress={handlelatestreports}>
+            {/* Main Button  onPress={handlelatestreports}*/}
+            <TouchableOpacity style={styles.reportBtn} >
                 <LinearGradient
                     colors={[COLORS.gradientStart, COLORS.gradientEnd]}
                     style={styles.reportGradient} >
@@ -69,14 +76,14 @@ const HomeScreen = ({ navigation }) => {
 
             {/* Cards */}
             <View style={styles.cardRow}>
-                <TouchableOpacity style={styles.card}>
+                <TouchableOpacity style={styles.card} onPress={handleshowreminders}>
                     <View style={styles.cardIconCircle}>
                         <Icon name="calendar-check-outline" size={25} color={COLORS.white} />
                     </View>
                     <Text style={styles.cardText}>Upcoming reminders</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.card}>
+                <TouchableOpacity style={styles.card} onPress={handlsuggetions}>
                     <View style={styles.cardIconCircle}>
                         <Icon name="lightbulb-on-outline" size={25} color={COLORS.white} />
                     </View>

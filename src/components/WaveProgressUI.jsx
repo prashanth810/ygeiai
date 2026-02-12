@@ -1,28 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ReactNativeWaveView from 'react-native-waveview';
 import { COLORS, SIZES } from '../utils/Constants';
 
-const WaveProgressUI = () => {
+const WaveProgressUI = ({ progress = 30 }) => { // Pass progress as a prop (0 to 100)
+
+    // Ensure progress stays between 0 and 100
+    const validatedProgress = Math.min(Math.max(progress, 0), 100);
+
+    // Calculate H: If progress is 80%, H should be 20% of the height (21.2 for a 106 height)
+    const containerHeight = 106;
+    const waveHeight = containerHeight * (1 - validatedProgress / 100);
+
     return (
         <View style={styles.container}>
-            {/* Main Circular Container */}
             <View style={styles.circleWrapper}>
 
-                {/* Wave Component */}
                 <ReactNativeWaveView
                     style={styles.waveBall}
-                    H={40} // Controls the water level (Higher = lower water)
+                    H={waveHeight} // Dynamic height calculation
                     waveParams={[
-                        { A: 10, T: 180, fill: '#6236FF' }, // Darker purple wave
-                        { A: 15, T: 140, fill: '#C4B5FD' }, // Lighter purple wave
+                        { A: 10, T: 180, fill: '#6236FF' },
+                        { A: 15, T: 140, fill: '#C4B5FD' },
                     ]}
                     animated={true}
                 />
 
-                {/* Text Overlays */}
                 <View style={styles.textContainer}>
-                    <Text style={styles.percentageText}>30%</Text>
+                    <Text style={styles.percentageText}>{validatedProgress}%</Text>
                 </View>
 
             </View>
@@ -39,35 +44,28 @@ const styles = StyleSheet.create({
     circleWrapper: {
         width: 106,
         height: 106,
-        borderRadius: 90,
-        backgroundColor: COLORS.white, // White background of the circle
-        overflow: 'hidden', // This is critical to keep waves inside the circle
+        borderRadius: 53, // Half of width/height for a perfect circle
+        backgroundColor: COLORS.white,
+        overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 0,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
     },
     waveBall: {
-        width: 180,
+        width: 106, // Match the container width
         aspectRatio: 1,
         position: 'absolute',
-        bottom: 0, // Keeps the wave at the bottom
+        bottom: 0,
     },
     textContainer: {
         position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
+        zIndex: 10, // Ensure text stays on top of the water
     },
     percentageText: {
         fontSize: SIZES.h2,
-        fontWeight: SIZES.mediumbold,
-        color: COLORS.linkText, // Purple color from image
-        marginBottom: 23,
-    },
-    statusText: {
-        fontSize: 20,
-        fontWeight: '500',
+        fontWeight: '700',
         color: COLORS.linkText,
-        opacity: 0.9,
     },
 });
 

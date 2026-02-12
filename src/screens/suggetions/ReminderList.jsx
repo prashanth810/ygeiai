@@ -11,8 +11,16 @@ import { COLORS, SIZES } from '../../utils/Constants';
 
 const ReminderList = ({ navigation }) => {
 
+    const handleprevoius = () => {
+        navigation.replace("home")
+    }
+
     const handleaddreminder = () => {
         navigation.navigate('addreminder');
+    }
+
+    const handleaddnewreminder = () => {
+        navigation.replace("addremindernote");
     }
 
     const handleopennotafications = () => {
@@ -46,7 +54,7 @@ const ReminderList = ({ navigation }) => {
 
             {/* HEADER */}
             <View style={styles.headerRow}>
-                <TouchableOpacity style={styles.circleBtn}>
+                <TouchableOpacity style={styles.circleBtn} onPress={handleprevoius}>
                     <Icon name="arrow-left" size={22} color="#fff" />
                 </TouchableOpacity>
 
@@ -66,18 +74,23 @@ const ReminderList = ({ navigation }) => {
 
             {/* GRID */}
             <View style={styles.grid}>
-                <Card icon="flask-outline" title="Liver Test" count="2" />
-                <Card icon="calendar-clock" title="Scheduled" count="2" />
-                <Card icon="view-grid-outline" title="All" count="2" />
-                <Card icon="flag-outline" title="Flagged" count="2" />
-                <Card icon="check-circle-outline" title="Completed" count="2" />
+                <Card icon="flask-outline" title="Liver Test" count="2"
+                    onPress={handleaddreminder} />
+                <Card icon="calendar-clock" title="Scheduled" count="2"
+                    onPress={handleaddreminder} />
+                <Card icon="view-grid-outline" title="All" count="2"
+                    onPress={handleaddreminder} />
+                <Card icon="flag-outline" title="Flagged" count="2"
+                    onPress={handleaddreminder} />
+                <Card icon="check-circle-outline" title="Completed" count="2"
+                    onPress={handleaddreminder} />
 
                 <Card
                     icon="plus"
                     title="Add Reminder"
                     count=""
                     dark
-                    onPress={handleaddreminder}
+                    onPress={handleaddnewreminder}
                 />
             </View>
         </View>

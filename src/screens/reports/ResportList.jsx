@@ -55,7 +55,7 @@ const ResportList = ({ navigation }) => {
 
 
     const renderItem = ({ item }) => (
-        <View style={styles.listCard}>
+        <TouchableOpacity style={styles.listCard} onPress={handleviewdetails}>
             <View style={styles.iconCircle}>
                 <Icon name="file-document-outline" size={22} color="#fff" />
             </View>
@@ -68,7 +68,7 @@ const ResportList = ({ navigation }) => {
             <View style={styles.percentBadge}>
                 <Text style={styles.percentText}>{item.percent}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     return (
@@ -97,7 +97,7 @@ const ResportList = ({ navigation }) => {
                     <Text style={styles.headerBig}>{report?.title}</Text>
                     <Text style={styles.date}>{report?.date}</Text>
 
-                    <TouchableOpacity style={styles.moreBtn} onPress={handleviewdetails}>
+                    <TouchableOpacity style={styles.moreBtn}>
                         <LinearGradient
                             colors={[COLORS.gradientStart, COLORS.gradientEnd]}
                             style={styles.moreBtnInner}>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
 
     percentText: { color: '#fff' },
 
-    newTestBtn: { position: 'absolute', bottom: 100, left: 20, right: 20 },
+    newTestBtn: { position: 'absolute', bottom: 75, left: 20, right: 20 },
     newTestInner: {
         height: 55,
         borderRadius: 28,
