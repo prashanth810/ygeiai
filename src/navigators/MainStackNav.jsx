@@ -23,7 +23,10 @@ const Stack = createNativeStackNavigator();
 const MainStackNav = () => {
     return (
         <View style={styles.container}>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName="home"
+            >
                 <Stack.Screen name="home" component={HomeScreen} />
                 <Stack.Screen name="reports" component={ResportList} />
                 <Stack.Screen name="calendar" component={Calendartimings} />

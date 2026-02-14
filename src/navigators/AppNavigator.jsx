@@ -5,9 +5,11 @@ import SplashScreen from '../screens/SplashScreen';
 import Onboardingone from '../screens/onboarding screens/Onboardingone';
 import OnboardingTwo from '../screens/onboarding screens/OnboardingTwo';
 import LoginScreen from '../screens/authentication/LoginScreen';
+import RegisterScreen from '../screens/authentication/RegisterScreen';
 import ProfileSetup from '../screens/authentication/ProfileSetup';
 import MainStackNav from '../navigators/MainStackNav';
 import Latestreports from '../screens/home/Latestreports';
+import AuthTestScreen from '../screens/testing/AuthTestScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +25,12 @@ const AppNavigator = () => {
                 />
                 <Stack.Screen name="onboardone" component={Onboardingone} />
                 <Stack.Screen name="login" component={LoginScreen} />
+                <Stack.Screen name="register" component={RegisterScreen} />
                 <Stack.Screen name="profile" component={ProfileSetup} />
                 <Stack.Screen name="main" component={MainStackNav} />
+
+                {/* Testing Screen */}
+                <Stack.Screen name='authTest' component={AuthTestScreen} />
 
                 {/* ====================   without bottom navigators =============== */}
                 <Stack.Screen name='latestReportFlow' component={Latestreports} />

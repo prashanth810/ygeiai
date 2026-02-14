@@ -17,22 +17,21 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, SIZES } from '../../utils/Constants';
 import brandlogo2 from '../../assets/brandlogo2.png';
-import applelogo from '../../assets/applelogo.png';
-import googlelogo from '../../assets/googlelogo.png';
 import Feather from 'react-native-vector-icons/Feather';
 import { useDispatch, useSelector } from 'react-redux';
-import { handlelogin } from '../../redux/slices/AuthSlice';
+import { handleRegister } from '../../redux/slices/AuthSlice';
 
+const { width } = Dimensions.get('window');
 
-
-const { width, height } = Dimensions.get('window');
-
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { loginloading, loginerror, logindata } = useSelector(state => state.Auth.loginuser);
+    const { loading, error, data } = useSelector(state => state.Auth.register);
 
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
@@ -44,40 +43,45 @@ const LoginScreen = ({ navigation }) => {
         setEmailValid(emailRegex.test(text));
     };
 
-    // Handle successful login
+    // Handle successful registration
     useEffect(() => {
-        if (logindata && !loginloading) {
-            Alert.alert('Success', 'Login successful!', [
-                {
-                    text: 'OK',
-                    onPress: () => navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'main' }],
-                    })
-                }
-            ]);
+        if (data && !loading) {
+            Alert.alert(
+                'Success',
+                'Registration successful! Please login.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('login')
+                    }
+                ]
+            );
         }
-    }, [logindata, loginloading]);
+    }, [data, loading]);
 
-    // Handle login error
+    // Handle registration error
     useEffect(() => {
-        if (loginerror) {
-            Alert.alert('Error', loginerror);
+        if (error) {
+            Alert.alert('Error', error);
         }
-    }, [loginerror]);
+    }, [error]);
 
-    const handleCreateAccount = async () => {
-        if (emailValid && password.length >= 6 && agreeToTerms) {
+    const handleSignup = async () => {
+        if (emailValid && password.length >= 6 && name.trim() && agreeToTerms) {
             try {
-                await dispatch(handlelogin({ email, password })).unwrap();
+                await dispatch(handleRegister({
+                    name,
+                    email,
+                    password,
+                    phone: phone || undefined,
+                    address: address || undefined,
+                })).unwrap();
             } catch (error) {
-                console.error('Login failed:', error);
+                console.error('Registration failed:', error);
             }
+        } else {
+            Alert.alert('Validation Error', 'Please fill all required fields');
         }
-    };
-
-    const handleSocialLogin = (provider) => {
-        console.log(`Login with ${provider}`);
     };
 
     return (
@@ -87,8 +91,8 @@ const LoginScreen = ({ navigation }) => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
-                keyboardShouldPersistTaps="handled" >
-
+                keyboardShouldPersistTaps="handled"
+            >
                 {/* Logo Section */}
                 <View style={styles.logoContainer}>
                     <Image
@@ -99,18 +103,32 @@ const LoginScreen = ({ navigation }) => {
 
                 {/* Header Section */}
                 <View style={styles.headerSection}>
-                    <Text style={styles.title}>Get started in a couple</Text>
-                    <Text style={styles.title}>of minutes</Text>
+                    <Text style={styles.title}>Create your account</Text>
                     <Text style={styles.subtitle}>
-                        Create your account and join{'\n'}your virtual ygeiai.
+                        Join us and start your journey
                     </Text>
                 </View>
 
                 {/* Form Section */}
                 <View style={styles.formContainer}>
+                    {/* Name Input */}
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Full Name <Text style={styles.required}>*</Text></Text>
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="John Doe"
+                                placeholderTextColor={COLORS.placeholderText}
+                                value={name}
+                                onChangeText={setName}
+                                autoCapitalize="words"
+                            />
+                        </View>
+                    </View>
+
                     {/* Email Input */}
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Email</Text>
+                        <Text style={styles.label}>Email <Text style={styles.required}>*</Text></Text>
                         <View style={styles.inputWrapper}>
                             <TextInput
                                 style={styles.input}
@@ -127,14 +145,15 @@ const LoginScreen = ({ navigation }) => {
                                     name="check"
                                     size={18}
                                     color={COLORS.success}
-                                    style={styles.inputIcon} />
+                                    style={styles.inputIcon}
+                                />
                             )}
                         </View>
                     </View>
 
                     {/* Password Input */}
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Password</Text>
+                        <Text style={styles.label}>Password <Text style={styles.required}>*</Text></Text>
                         <View style={styles.inputWrapper}>
                             <TextInput
                                 style={styles.input}
@@ -148,11 +167,43 @@ const LoginScreen = ({ navigation }) => {
                             />
                             <TouchableOpacity
                                 onPress={() => setShowPassword(!showPassword)}
-                                style={styles.inputIcon}>
-                                {showPassword ? (<Feather name="eye"
+                                style={styles.inputIcon}
+                            >
+                                <Feather
+                                    name={showPassword ? "eye" : "eye-off"}
                                     size={16}
-                                    color={COLORS.mediumText} />) : (<Feather name="eye-off" size={16} />)}
+                                    color={COLORS.mediumText}
+                                />
                             </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    {/* Phone Input (Optional) */}
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Phone Number</Text>
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="9876543210"
+                                placeholderTextColor={COLORS.placeholderText}
+                                value={phone}
+                                onChangeText={setPhone}
+                                keyboardType="phone-pad"
+                            />
+                        </View>
+                    </View>
+
+                    {/* Address Input (Optional) */}
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Address</Text>
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Your address"
+                                placeholderTextColor={COLORS.placeholderText}
+                                value={address}
+                                onChangeText={setAddress}
+                            />
                         </View>
                     </View>
 
@@ -160,15 +211,15 @@ const LoginScreen = ({ navigation }) => {
                     <TouchableOpacity
                         style={styles.checkboxContainer}
                         onPress={() => setAgreeToTerms(!agreeToTerms)}
-                        activeOpacity={0.7} >
-
+                        activeOpacity={0.7}
+                    >
                         <View style={styles.checkbox}>
                             {agreeToTerms && (
                                 <Icon name="check" size={16} color={COLORS.success} />
                             )}
                         </View>
                         <Text style={styles.checkboxText}>
-                            I agree to ygeiai{' '}
+                            I agree to{' '}
                             <Text style={styles.linkText}>Terms of Services</Text> and{' '}
                             <Text style={styles.linkText}>Privacy Policy</Text>
                         </Text>
@@ -177,63 +228,33 @@ const LoginScreen = ({ navigation }) => {
                     {/* Create Account Button */}
                     <TouchableOpacity
                         style={styles.buttonContainer}
-                        onPress={handleCreateAccount}
+                        onPress={handleSignup}
                         activeOpacity={0.8}
-                        disabled={!emailValid || password.length < 6 || !agreeToTerms || loginloading} >
+                        disabled={!emailValid || password.length < 6 || !name.trim() || !agreeToTerms || loading}
+                    >
                         <LinearGradient
                             colors={[COLORS.gradientEnd, COLORS.gradientStart]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
                             style={[
                                 styles.button,
-                                (!emailValid || password.length < 6 || !agreeToTerms || loginloading) &&
+                                (!emailValid || password.length < 6 || !name.trim() || !agreeToTerms || loading) &&
                                 styles.buttonDisabled,
-                            ]} >
-
-                            {loginloading ? (
+                            ]}
+                        >
+                            {loading ? (
                                 <ActivityIndicator size="small" color={COLORS.white} />
                             ) : (
-                                <Text style={styles.buttonText}>Sign In</Text>
+                                <Text style={styles.buttonText}>Create account</Text>
                             )}
                         </LinearGradient>
                     </TouchableOpacity>
 
-                    {/* Test API Button */}
-                    <TouchableOpacity
-                        style={styles.testButtonContainer}
-                        onPress={() => navigation.navigate('authTest')}
-                        activeOpacity={0.8}
-                    >
-                        <Text style={styles.testButtonText}>🧪 Test All APIs</Text>
-                    </TouchableOpacity>
-
-                    {/* Divider */}
-                    <Text style={styles.dividerText}>or sign in with</Text>
-
-                    {/* Social Login Buttons */}
-                    <View style={styles.socialContainer}>
-                        <TouchableOpacity
-                            style={styles.socialButton}
-                            onPress={() => handleSocialLogin('Apple')}
-                            activeOpacity={0.7}
-                        >
-                            <Image source={applelogo} style={styles.socialIcon} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={styles.socialButton}
-                            onPress={() => handleSocialLogin('Google')}
-                            activeOpacity={0.7}
-                        >
-                            <Image source={googlelogo} style={styles.socialIcon} />
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Sign Up Link */}
+                    {/* Sign In Link */}
                     <View style={styles.signInContainer}>
-                        <Text style={styles.signInText}>Don't have an account? </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('register')}>
-                            <Text style={styles.signInLink}>Sign Up</Text>
+                        <Text style={styles.signInText}>Already have an account? </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('login')}>
+                            <Text style={styles.signInLink}>Sign In</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -242,7 +263,7 @@ const LoginScreen = ({ navigation }) => {
     );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -257,26 +278,7 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         alignItems: 'center',
-    },
-    logoPlaceholder: {
-        width: 60,
-        height: 60,
-        borderRadius: 15,
-        backgroundColor: COLORS.lightGray,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-    logoText: {
-        fontSize: width * 0.065,
-        fontWeight: '700',
-        color: COLORS.darkText,
-        letterSpacing: 1,
-    },
-    logoSubtext: {
-        fontSize: width * 0.032,
-        color: COLORS.mediumText,
-        marginTop: 2,
+        marginBottom: 20,
     },
     headerSection: {
         marginBottom: 23,
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 12,
         lineHeight: 22,
-        letterSpacing: 0.5
+        letterSpacing: 0.5,
     },
     formContainer: {
         width: '100%',
@@ -307,6 +309,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: COLORS.darkText,
         marginBottom: 8,
+    },
+    required: {
+        color: '#FF4444',
     },
     inputWrapper: {
         flexDirection: 'row',
@@ -381,52 +386,11 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         letterSpacing: 0.5,
     },
-    testButtonContainer: {
-        width: '100%',
-        height: 50,
-        borderRadius: SIZES.buttonRadius,
-        backgroundColor: '#7C3AED',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    testButtonText: {
-        fontSize: SIZES.body,
-        fontWeight: '600',
-        color: COLORS.white,
-    },
-    dividerText: {
-        fontSize: SIZES.body2,
-        color: COLORS.lightText,
-        textAlign: 'center',
-        marginVertical: 20,
-    },
-    socialContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 20,
-        marginBottom: 24,
-    },
-    socialButton: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        backgroundColor: COLORS.white,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: COLORS.inputBorder,
-        elevation: 2,
-        shadowColor: COLORS.black,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
     signInContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10,
     },
     signInText: {
         fontSize: SIZES.body2,
@@ -437,20 +401,4 @@ const styles = StyleSheet.create({
         color: COLORS.linkText,
         fontWeight: '600',
     },
-    socialIcon: {
-        width: 30,
-        height: 30,
-        resizeMode: 'contain',
-    },
-    socialButton: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,  // round
-        backgroundColor: COLORS.white,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: COLORS.inputBorder,
-    },
-
 });

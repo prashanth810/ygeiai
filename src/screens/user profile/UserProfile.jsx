@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,7 @@ import {
     Image,
     TextInput,
     Switch,
+    ActivityIndicator,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,11 +20,18 @@ import { COLORS, SIZES } from '../../utils/Constants';
 import profileimg from '../../assets/profileimg.png';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Modal, Platform, PermissionsAndroid, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile, updateProfile, handleLogout as logoutThunk } from '../../redux/slices/AuthSlice';
 
 
 const { width } = Dimensions.get('window');
 
 const UserProfile = ({ navigation }) => {
+    // Redux
+    const dispatch = useDispatch();
+    const { data: profileData, loading: profileLoading, error: profileError } = useSelector(state => state.Auth.profile);
+    const { logindata } = useSelector(state => state.Auth.loginuser);
+
     // ALL HOOKS MUST BE AT THE TOP - NEVER CONDITIONAL
     const [menuVisible, setMenuVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -34,28 +42,83 @@ const UserProfile = ({ navigation }) => {
     const [disclaimerVisible, setDisclaimerVisible] = useState(false);
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('Please Choose');
-    const [heightUnit, setHeightUnit] = useState('cm');
+    const [heightUnit, setHeightUnit] = useState('CM');
     const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
     const [address, setAddress] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('+357');
-    const [email, setEmail] = useState('youremail@gmail.com');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
     const [theme, setTheme] = useState('Please Choose');
     const [units, setUnits] = useState('Please Choose');
     const [language, setLanguage] = useState('Please Choose');
     const [notification1, setNotification1] = useState(false);
     const [notification2, setNotification2] = useState(false);
     // NEW: Profile image state
-    const [profileImage, setProfileImage] = useState('https://randomuser.me/api/portraits/women/44.jpg');
+    const [profileImage, setProfileImage] = useState(null);
     const [imagePickerVisible, setImagePickerVisible] = useState(false);
+
+    // Fetch profile data on component mount
+    useEffect(() => {
+        dispatch(getUserProfile());
+    }, []);
+
+    // Update state when profile data is fetched
+    useEffect(() => {
+        if (profileData && profileData.length > 0) {
+            const profile = profileData[0];
+            setFullName(profile.displayName || '');
+            setGender(profile.gender || 'Please Choose');
+            setHeight(profile.height?.toString() || '');
+            setWeight(profile.weight?.toString() || '');
+            setHeightUnit(profile.heightUnit || 'CM');
+            setPhoneNumber(profile.phone || '');
+            setAddress(profile.address || '');
+            setEmail(logindata?.user?.email || '');
+
+            // Set profile image if available
+            if (profile.avatarUrl) {
+                setProfileImage(`http://216.158.226.71${profile.avatarUrl}`);
+            }
+        }
+    }, [profileData, logindata]);
 
     const handleEdit = () => {
         setMenuVisible(false);
         setEditMode(true);
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setMenuVisible(false);
-        console.log('Logout');
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Logout',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await dispatch(logoutThunk()).unwrap();
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'login' }],
+                            });
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            // Even if API fails, still navigate to login
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'login' }],
+                            });
+                        }
+                    }
+                }
+            ]
+        );
     };
 
     const handleSavePersonalInfo = () => {
@@ -184,26 +247,32 @@ const UserProfile = ({ navigation }) => {
 
                 {/* Profile Section - UPDATED with default icon */}
                 <View style={styles.profileSection}>
-                    <View style={styles.profileImageContainer}>
-                        {profileImage ? (
-                            <Image
-                                source={{ uri: profileImage }}
-                                style={styles.profileImage}
-                            />
-                        ) : (
-                            <View style={styles.defaultProfileIcon}>
-                                <Ionicons name="person" size={40} color="#A0A3BD" />
+                    {profileLoading ? (
+                        <ActivityIndicator size="large" color="#00D9D5" />
+                    ) : (
+                        <>
+                            <View style={styles.profileImageContainer}>
+                                {profileImage ? (
+                                    <Image
+                                        source={{ uri: profileImage }}
+                                        style={styles.profileImage}
+                                    />
+                                ) : (
+                                    <View style={styles.defaultProfileIcon}>
+                                        <Ionicons name="person" size={40} color="#A0A3BD" />
+                                    </View>
+                                )}
+                                <TouchableOpacity
+                                    style={styles.editIconContainer}
+                                    onPress={() => setImagePickerVisible(true)}
+                                >
+                                    <Ionicons name="camera-outline" size={20} color="#fff" />
+                                </TouchableOpacity>
                             </View>
-                        )}
-                        <TouchableOpacity
-                            style={styles.editIconContainer}
-                            onPress={() => setImagePickerVisible(true)}
-                        >
-                            <Ionicons name="camera-outline" size={20} color="#fff" />
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={styles.userName}>User Name</Text>
-                    <Text style={styles.userEmail}>username@gmail.com</Text>
+                            <Text style={styles.userName}>{fullName || 'User Name'}</Text>
+                            <Text style={styles.userEmail}>{email || 'email@gmail.com'}</Text>
+                        </>
+                    )}
                 </View>
 
                 <Modal
@@ -307,6 +376,16 @@ const UserProfile = ({ navigation }) => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+
+                            <Text style={styles.label}>Weight (kg)</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder=""
+                                value={weight}
+                                onChangeText={setWeight}
+                                keyboardType="numeric"
+                                editable={editMode}
+                            />
 
                             <Text style={styles.label}>Address</Text>
                             <TextInput

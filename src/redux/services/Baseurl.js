@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const BASE_URL = "http://216.158.226.71/api/auth";
+export const BASE_URL = "http://216.158.226.71/api";
 
 const Baseurl = axios.create({
     baseURL: BASE_URL,
@@ -35,15 +35,14 @@ Baseurl.interceptors.response.use(
                     refreshToken,
                 });
 
-                const { accessToken, refreshToken: newRefresh } = res.data;
+                const { accessToken } = res.data;
 
                 await AsyncStorage.setItem("accessToken", accessToken);
-                await AsyncStorage.setItem("refreshToken", newRefresh);
 
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return Baseurl(originalRequest);
             } catch (err) {
-                await AsyncStorage.multiRemove(["accessToken", "refreshToken"]);
+                await AsyncStorage.multiRemove(["accessToken", "refreshToken", "user"]);
             }
         }
 
